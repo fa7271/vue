@@ -1,6 +1,6 @@
 <template>
     <div class="container">
-        <div class="page-header">
+        <div class="page-header text-center" style="margin-top:20px;">
           <h1>로그인</h1>
         </div>
         <div id="update-form" class="mt-4">
@@ -46,8 +46,12 @@ export default {
           const decoded = jwtDecode(token)
           localStorage.setItem("token",token) // 로그인 성공시
           localStorage.setItem("role",decoded.role)
+          // created 함수는 reload될때 1번만 실행되는 hook 함수
+          // 그런데, router.push를 통한 화면전환은 reload를 실행시키지 않으며, created함수 호출이 되지 않음
           
-          this.$router.push("/") // 홈으로 보냄
+          // this.$router.push("/") // 라우터를 이용하여 홈으로 보냄
+          // 윈도우 객체를 이용해서 화면 이동
+          window.location.href = "/";
         }else{
           alert("Loign failed")
         }

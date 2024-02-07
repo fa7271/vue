@@ -1,7 +1,9 @@
 import { createRouter,createWebHistory } from "vue-router";
 import HomeComponent from '@/components/HomeComponent.vue'
-import MemberList from '@/views/MemberList.vue'
 import LoginComponent from '@/views/LoginComponent.vue'
+// export default 인 경우에는 {} 필요없고, 여러개 요소가 있을경우네는 {} 필요
+import {memberRoutes} from './memberRouter.js'
+import {orderRoutes} from './orderRouter.js'
 const routes = [
     {   
         // 라우터 경로
@@ -11,16 +13,15 @@ const routes = [
         // 넣을 component
         component:HomeComponent
     },
-    {   
-        path : '/members',
-        name : 'memberList',
-        component:MemberList,
-    },
+    
     {
         path:'/login',
-        name : 'login',
+        name : 'Login',
         component: LoginComponent,
-    }
+    },
+    // ... 은 스프레드 연산자로 불린다 주로 배열 요소를 다른 배열요소에 합할때 사용된다
+    ...memberRoutes,
+    ...orderRoutes
 ]
 const router = createRouter({
     // vue router는 내부적으로 두가지 방식의 히스토리 관리를 제공한다.
