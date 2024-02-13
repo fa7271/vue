@@ -8,6 +8,14 @@
  <input type = "text" v-model = "inputvalue2"/>
  <!-- onclick = @click -->
  <button @click="showValue">변수 변경사항 확인</button>
+ <div>
+    <h2>{{count}}</h2>
+    <button @click="increment">increment</button>
+ </div>
+ <div>
+    <h2>{{doublecount}}</h2>
+    <button @click="increment">increment</button>
+ </div>
 </template>
 
 <script>
@@ -17,7 +25,8 @@ export default {
         return{
             myLang:"python",
             inputvalue1:"python2",
-            inputvalue2:"python3"
+            inputvalue2:"python3",
+            count :0,
         }
     },
     // vue 생명주기에서 인스턴스가 생성되는 시점을 created라고 하고, mounted는 생성된 이후이다. 
@@ -25,7 +34,15 @@ export default {
     created(){ 
         this.myLang = "java"
     },
+    computed:{
+        doublecount(){
+            return this.count * 2;
+        }
+    },
     methods : {
+        increment(){
+            this.count ++;
+        },
         showValue(){
             alert(this.inputvalue2)
         }
