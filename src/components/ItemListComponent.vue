@@ -14,7 +14,7 @@
                 <button type="submit">검색</button>
             </form>
             <div v-if="!isAdmin">
-                <button @click="addCart" class="btn btn-secondary">장바구니()</button>
+                <button @click="addCart" class="btn btn-secondary">장바구니</button>
                 <button @click="placeOrder" class="btn btn-success">주문하기</button>
             </div>
             <div v-if="isAdmin">
@@ -51,6 +51,7 @@
 
 <script>
 import axios from 'axios';
+import {mapActions} from 'vuex';
 export default {
     props: ['isAdmin', 'pageTitle'],
     data() {
@@ -73,6 +74,7 @@ export default {
         // scroll 동작이 발생할때마다 scrollPagination함수 호출된다는 의미
         window.addEventListener('scroll', this.scrollPagination);
     },
+    ...mapActions(['addToCart']),
     methods: { //사용자 정의 함수
         addCart() {
             const orderItems = Object.keys(this.selectedItems)
@@ -81,7 +83,12 @@ export default {
                     const item = this.itemList.find(item => item.id == key)
                     return { itemId: item.id, name: item.name, count: item.quantity }
                 })
-            orderItems.forEach(item => this.$store.commit('addToCart', item))
+            // mutation 직접 호출
+            // orderItems.forEach(item => this.$store.commit('addToCart', item))
+
+            // actions 호출방식
+            orderItems.forEach(item => this.$store.dispatch('addToCart', item))
+
 
         },
         async placeOrder() {
@@ -94,6 +101,17 @@ export default {
                 })
             const token = localStorage.getItem('token');
             const headers = token ? { Authorization: `Bearer ${token}` } : {};
+            
+            if(orderItems.length < 1){
+                alert("물건 이 없어요")
+                return
+            }
+
+            if(!confirm(`${orderItems.length}개의 상품을 주문하시겠습니까 `)){
+                console.log("주문이 취소됐습니다")
+                return
+            }
+            
             try {
                 await axios.post(`${process.env.VUE_APP_API_BASE_URL}/order/create`, orderItems, { headers })
                 console.log(orderItems)
@@ -116,6 +134,7 @@ export default {
         },
         searchItems() {
             this.itemList = [];
+            this.selectedItems = [];
             this.currentPage = 0;
             this.isLastPage = false;
             this.loadItems();
