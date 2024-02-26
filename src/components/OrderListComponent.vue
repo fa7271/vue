@@ -53,6 +53,7 @@ export default {
             const headers = token ? { Authorization: `Bearer ${token}` } : {};
             const response = await axios.get(`${process.env.VUE_APP_API_BASE_URL}${this.apiUrl}`, { headers });    // headers부분의 규격이 {}로 감싸져 있음
             this.orderList = response.data;
+            console.log(response)
         } catch (error) {
             console.log(error);
         }

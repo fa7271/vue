@@ -170,14 +170,17 @@ export default {
                 console.log("데이터 호출");
                 const response = await axios.get(`${process.env.VUE_APP_API_BASE_URL}/items`, { params });
                 const addItemList = response.data.map(item => ({ ...item, quantity: 1 }))
+                console.log(response)
                 if (addItemList.length < this.pageSize) {
                     this.isLastPage = true;
                 }
                 this.itemList = [...this.itemList, ...addItemList]; // 두 배열이 합해진다 // 기존 itemList완
+                console.log(this.itemList)
             } catch (error) {
                 console.log(error)
             }
             this.isLoading = false;
+            
         }
     },
 }

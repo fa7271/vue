@@ -39,6 +39,8 @@ export default {
         const headers = token ? {Authorization: `Bearer ${token}`} : {};
         const response = await axios.get(`${process.env.VUE_APP_API_BASE_URL}/members`, {headers});
         this.memberList = response.data;
+        console.log(this.memberList)
+        console.log(response)
         }catch(error){
             console.log(error)
         }
